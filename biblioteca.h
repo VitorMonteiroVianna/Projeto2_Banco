@@ -1,0 +1,8 @@
+//
+// Created by vmont on 28/09/2023.
+//
+
+#ifndef PROJETO2_BANCO_BIBLIOTECA_H
+#define PROJETO2_BANCO_BIBLIOTECA_H
+
+#endif //PROJETO2_BANCO_BIBLIOTECA_H
