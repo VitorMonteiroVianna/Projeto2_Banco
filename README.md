@@ -1,7 +1,5 @@
 ﻿# Projeto2_Banco
 
-teste 
-
 -Esse é um projeto feito inteiramente em C, com o intuito de simular um banco em um menu com interação feita toda dentro do CMD. O banco conta com as seguintes funções:
 
 -Criar um novo cliente
