@@ -3,6 +3,8 @@
 #include <unistd.h>
 
 int main() {
+  criarDiretorioClientes();
+  
   int(operador);
 
   printf("BANCO QUEM POUPA TEM\n\n");

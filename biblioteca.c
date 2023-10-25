@@ -16,6 +16,15 @@ void limpaBuffer() {
   } while (a != '\n' && a != EOF);
 }
 
+// Cria uma pasta para armazenar as pastas com os clientes
+void criarDiretorioClientes() {
+    if (mkdir("CLIENTES", 0700) == 0) {
+        printf("Diretório CLIENTES criado com sucesso.\n");
+    } else {
+        printf("O diretório CLIENTES já existe ou ocorreu um erro ao criá-lo.\n");
+    }
+}
+
 void novo_cliente() {
   limpaBuffer();
 
@@ -33,12 +42,20 @@ void novo_cliente() {
   fgets(pCliente->nome, sizeof(pCliente->nome), stdin);
   pCliente->nome[strcspn(pCliente->nome, "\n")] =
       '\0'; // Remove o caractere de nova linha
+  do{
+      printf("\nMuito bem\n");
+      printf("Agora, informe seu CPF: ");
+      fgets(pCliente->CPF, sizeof(pCliente->CPF), stdin);
+      pCliente->CPF[strcspn(pCliente->CPF, "\n")] = '\0'; // Remove o caractere de nova linha
 
-  printf("\nMuito bem\n");
-  printf("Agora, informe seu CPF: ");
-  fgets(pCliente->CPF, sizeof(pCliente->CPF), stdin);
-  pCliente->CPF[strcspn(pCliente->CPF, "\n")] =
-      '\0'; // Remove o caractere de nova linha
+      // Verifica se o CPF tem 11 dígitos
+      if (strlen(cliente.CPF) == 11) {
+          valido = 1;
+      } else {
+          printf("CPF inválido. Tente novamente.\n");
+      }
+  } while (!valido);
+
 
   printf("\nOk\n");
   printf("Agora vamos escolher qual tipo de conta você deseja criar\n");
