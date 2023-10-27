@@ -30,12 +30,12 @@ void novo_cliente() {
 
   // sessao UX
   printf("Bem vindo ao Banco Quem Poupa Tem\n");
-  printf("Para continuar com a criaçao da sua conta preciso que você me "
-         "forneça algumas informações, ok?\n");
+  printf("Para continuar com a criacao da sua conta preciso que voce me "
+         "forneca algumas informacoes, ok?\n");
   printf("Vamos la\n");
 
-  // Solicita informações do cliente
-  printf("Para começar, digite o seu nome: ");
+  // Solicita informacoes do cliente
+  printf("Para comecar, digite o seu nome: ");
   fgets(pCliente->nome, sizeof(pCliente->nome), stdin);
   pCliente->nome[strcspn(pCliente->nome, "\n")] = '\0'; // Remove o caractere de nova linha
 
@@ -56,12 +56,12 @@ void novo_cliente() {
 
 
   printf("\nOk\n");
-  printf("Agora vamos escolher qual tipo de conta você deseja criar\n");
-  printf("Nosso banco trabalha com 2 opções\n");
+  printf("Agora vamos escolher qual tipo de conta voce deseja criar\n");
+  printf("Nosso banco trabalha com 2 opcoes\n");
   printf("\n1 - CONTA COMUM: 5%% de taxa a cada debito realizado\n");
-  printf("Você podera ter um saldo negativo de ate R$ 1.000,00\n");
+  printf("Voce podera ter um saldo negativo de ate R$ 1.000,00\n");
   printf("\n2 - CONTA PLUS: 3%% de taxa a cada debito realizado\n");
-  printf("Você podera um saldo negativo de ate R$ 5.000,00\n");
+  printf("Voce podera um saldo negativo de ate R$ 5.000,00\n");
 
   // condicao para que o valor da conta seja somente 1 ou 2
   do {
@@ -93,5 +93,6 @@ void novo_cliente() {
   printf("Valor inicial: %lf\n", pCliente -> valor_init);
   printf("Senha: %s\n", pCliente -> senha);
   limpaBuffer();
+
   return;
 }
