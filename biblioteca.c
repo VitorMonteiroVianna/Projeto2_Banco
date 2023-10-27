@@ -1,12 +1,8 @@
-//
-// Created by vmont on 28/09/2023.
-//
-
-#include "biblioteca.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "biblioteca.h"
 
 // funcao para limpar o lixo de memoria
 void limpaBuffer() {
@@ -18,13 +14,14 @@ void limpaBuffer() {
 
 // Cria uma pasta para armazenar as pastas com os clientes
 void criarDiretorioClientes() {
-    if (mkdir("CLIENTES", 0700) == 0) {
-        printf("Diretório CLIENTES criado com sucesso.\n");
+    if (mkdir("CLIENTES") == 0) {
+        printf("Diretorio CLIENTES criado com sucesso.\n");
     } else {
-        printf("O diretório CLIENTES já existe ou ocorreu um erro ao criá-lo.\n");
+        printf("O diretorio CLIENTES ja existe ou ocorreu um erro ao cria-lo.\n");
     }
 }
 
+// Cria um novo cliente
 void novo_cliente() {
   limpaBuffer();
 
@@ -33,26 +30,27 @@ void novo_cliente() {
 
   // sessao UX
   printf("Bem vindo ao Banco Quem Poupa Tem\n");
-  printf("Para presseguir com a criação da sua conta preciso que você me "
-         "formneça algumas informações, ok?\n");
-  printf("Vamos lá\n");
+  printf("Para continuar com a criaçao da sua conta preciso que você me "
+         "forneça algumas informações, ok?\n");
+  printf("Vamos la\n");
 
   // Solicita informações do cliente
   printf("Para começar, digite o seu nome: ");
   fgets(pCliente->nome, sizeof(pCliente->nome), stdin);
-  pCliente->nome[strcspn(pCliente->nome, "\n")] =
-      '\0'; // Remove o caractere de nova linha
+  pCliente->nome[strcspn(pCliente->nome, "\n")] = '\0'; // Remove o caractere de nova linha
+
+  int valido = 0;
   do{
       printf("\nMuito bem\n");
       printf("Agora, informe seu CPF: ");
       fgets(pCliente->CPF, sizeof(pCliente->CPF), stdin);
       pCliente->CPF[strcspn(pCliente->CPF, "\n")] = '\0'; // Remove o caractere de nova linha
 
-      // Verifica se o CPF tem 11 dígitos
-      if (strlen(cliente.CPF) == 11) {
+      // Verifica se o CPF tem 11 digitos
+      if (strlen(pCliente->CPF) == 11) {
           valido = 1;
       } else {
-          printf("CPF inválido. Tente novamente.\n");
+          printf("CPF invalido. Tente novamente.\n");
       }
   } while (!valido);
 
@@ -61,9 +59,9 @@ void novo_cliente() {
   printf("Agora vamos escolher qual tipo de conta você deseja criar\n");
   printf("Nosso banco trabalha com 2 opções\n");
   printf("\n1 - CONTA COMUM: 5%% de taxa a cada debito realizado\n");
-  printf("Você poderá ter um saldo negativo de até RS 1.000,00\n");
+  printf("Você podera ter um saldo negativo de ate R$ 1.000,00\n");
   printf("\n2 - CONTA PLUS: 3%% de taxa a cada debito realizado\n");
-  printf("Você poderá um saldo negativo de ate RS 5.000,00\n");
+  printf("Você podera um saldo negativo de ate R$ 5.000,00\n");
 
   // condicao para que o valor da conta seja somente 1 ou 2
   do {
@@ -84,16 +82,16 @@ void novo_cliente() {
   } while (pCliente->valor_init < 0);
 
   printf("\nAgora vamos finalizar\n");
-  printf("Escolha uma senha segura e não compartilhe com niguém\n");
+  printf("Escolha uma senha segura e nao compartilhe com ninguem\n");
   scanf("%s", pCliente->senha);
 
   // Exibe os dados do cliente
   printf("\nDados do novo cliente:\n");
   printf("Nome: %s\n", pCliente->nome);
-  printf("CPF: %s\n", pCliente->CPF);
-  printf("Tipo de conta: %d\n", pCliente->account_type);
-  printf("Valor inicial: %lf\n", pCliente->valor_init);
-  printf("Senha: %s\n", pCliente->senha);
+  printf("CPF: %s\n",  pCliente -> CPF);
+  printf("Tipo de conta: %d\n", pCliente -> account_type);
+  printf("Valor inicial: %lf\n", pCliente -> valor_init);
+  printf("Senha: %s\n", pCliente -> senha);
   limpaBuffer();
   return;
 }
