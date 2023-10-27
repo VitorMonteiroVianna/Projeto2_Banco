@@ -17,4 +17,6 @@ void limpaBuffer();
 
 void novo_cliente();
 
+void criarDiretorioClientes();
+
 #endif // PROJETO2_BANCO_BIBLIOTECA_H
