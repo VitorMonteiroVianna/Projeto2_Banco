@@ -19,4 +19,7 @@ void novo_cliente();
 
 void criarDiretorioClientes();
 
+void apaga_cliente();
+
+
 #endif // PROJETO2_BANCO_BIBLIOTECA_H

@@ -29,6 +29,22 @@ void *criarExt(char cpf_extrato[12]) {
   return 0;
 }
 
+//Funcao feita para achar um cliente especifico
+Cliente *procuraCliente(char cpf[12]) { 
+  char path[30];
+  sprintf(path, "CLIENTES/%s/info.bin", cpf); // Defino o caminho
+
+  //Inicia a logica de verificação do cliente
+  Cliente *pCliente = (Cliente *)malloc(sizeof(Cliente)); 
+  FILE *t = fopen(path, "rb"); 
+  if (t == NULL)            
+    return NULL;
+  fread(pCliente, sizeof(Cliente), 1, t);
+  fclose(t);
+  return pCliente;
+}
+
+
 // Cria um novo cliente
 void novo_cliente() {
   limpaBuffer();
@@ -119,3 +135,41 @@ void novo_cliente() {
   return;
 }
 
+void apaga_cliente() {
+  char cpf_excluido[12]; // declaro a variavel que vai receber o CPF que será excluido
+  printf("\n=====================================\n");
+  printf("OK, Vamos apagar sua conta!\n");
+  printf("Para isso, basta que me passe seu CPF:\n->");
+  scanf("%s", cpf_excluido);
+
+  // Usa a função procurar clientes, para achar o arquivo correto
+  Cliente *pCliente = procuraCliente(cpf_excluido);
+
+  // Confere se o CPF existe
+  if (pCliente == NULL) {
+    printf("\nEsse CPF não pertence a nenhum cliente!\n");
+    return; 
+  }
+
+  //Definos as variaveis que serão responsaveis por receber os caminhos dos arquivos
+  char pastaCliente_excluir[30];
+  char caminhoCompleto[100]; 
+
+
+  // caminho para apagar o arquivo cliente
+  sprintf(pastaCliente_excluir, "CLIENTES/%s/info.bin", cpf_excluido);
+  remove(pastaCliente_excluir); // arquivo cpf apagado
+  // caminho para apagar o arquivo TXT
+  sprintf(pastaCliente_excluir, "CLIENTES/%s/extrato.bin", cpf_excluido);
+  remove(pastaCliente_excluir); // arquivo txt apagado
+  // apagando o diretorio
+  strcpy(caminhoCompleto, "CLIENTES/");
+  strcat(caminhoCompleto, cpf_excluido);
+  rmdir(caminhoCompleto); // a pasta referente ao cpf foi removida
+  printf("\nCONTA REMOVIDA!\n");
+  sleep(1);
+  printf("Ate logo...\n");
+  sleep(1);
+
+  limpaBuffer();
+}

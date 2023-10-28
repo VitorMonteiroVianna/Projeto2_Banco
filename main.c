@@ -26,7 +26,8 @@ int main() {
     novo_cliente();
     break;
   case 2:
-    // Aqui vem a funcao de apagar cliente
+    apaga_cliente();
+
     break;
   case 3:
     // Aqui vem a funcao de Listar clientes

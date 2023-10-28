@@ -8,7 +8,7 @@
 /dataSources.local.xml
 
 
-.vscode/tasks.json
+.vscode/
 build/cmake_install.cmake
 build/CMakeCache.txt
 build/compile_commands.json
