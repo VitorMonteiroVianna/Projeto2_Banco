@@ -21,12 +21,20 @@ void criarDiretorioClientes() {
     }
 }
 
+void *criarExt(char cpf_extrato[12]) {
+  char path[30];
+  sprintf(path, "CLIENTES/%s/extrato.bin", cpf_extrato);
+  FILE *extrato = fopen(path, "wb");
+  fclose(extrato);
+  return 0;
+}
+
 // Cria um novo cliente
 void novo_cliente() {
   limpaBuffer();
 
   Cliente novoCliente;
-  Cliente *pCliente = &novoCliente; // Ponteiro para a struct Cliente
+  Cliente *pCliente = (Cliente *)malloc(sizeof(Cliente)); // Ponteiro para a struct Cliente
 
   // sessao UX
   printf("Bem vindo ao Banco Quem Poupa Tem\n");
@@ -90,9 +98,24 @@ void novo_cliente() {
   printf("Nome: %s\n", pCliente->nome);
   printf("CPF: %s\n",  pCliente -> CPF);
   printf("Tipo de conta: %d\n", pCliente -> account_type);
-  printf("Valor inicial: %lf\n", pCliente -> valor_init);
+  printf("Valor inicial: R$%.2lf\n", pCliente -> valor_init);
   printf("Senha: %s\n", pCliente -> senha);
-  limpaBuffer();
 
+  char path[50]; // create a buffer para o caminho do diretorio
+  sprintf(path, "CLIENTES/%s", pCliente->CPF); // gerar o caminho do diretorio
+  mkdir(path); // criar o diretorio
+
+  // Abrindo o arquivo para colocar os valores la dentro.
+  sprintf(path, "CLIENTES/%s/info.bin", pCliente->CPF); // gerar o caminho do arquivo
+  FILE *f = fopen(path, "wb");
+  fwrite(pCliente, sizeof(Cliente), 1, f);
+  fclose(f);
+
+  // cria o arquivo extrato.txt dentro da pasta do cliente
+  criarExt(pCliente->CPF); 
+
+  free(pCliente); // libera a memoria alocada para o ponteiro pCliente
+  limpaBuffer();
   return;
 }
+
