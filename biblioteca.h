@@ -25,4 +25,6 @@ void debito();
 
 void deposito();
 
+void tranferencia();
+
 #endif

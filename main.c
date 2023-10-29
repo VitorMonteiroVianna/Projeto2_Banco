@@ -44,7 +44,7 @@ int main() {
       // Aqui vem a funcao de exibir o extrato
       break;
     case 7:
-      // Aqui vem a funcao de tranferencia entre contas
+      tranferencia();
       break;
     case 0:
       printf("Saindo!\n");

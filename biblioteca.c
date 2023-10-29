@@ -249,6 +249,7 @@ void listaClientes() {
 
 // Funcao para efetuar um debito
 void debito (){
+  limpaBuffer();
   printf("Bem vindo a area de debito\n");
   printf("Para realizar a operacao preciso que voce me forneca algumas informacoes\n");
   
@@ -309,10 +310,12 @@ void debito (){
     };
   };
   // adicionar o valor do debito no extrato
+  limpaBuffer();
 };
 
 // Funcao para efetuar um deposito
 void deposito(){
+  limpaBuffer();
   printf("Bem vindo a area de deposito\n");
   printf("Para realizar a operacao preciso que voce me forneca algumas informacoes\n");
   
@@ -340,4 +343,81 @@ void deposito(){
   printf("Saldo atual: %.2f\n", pCliente -> saldo);
 
   // adicionar o valor do deposito no extrato
+  limpaBuffer();
+}
+
+// Funcao para transferir dinheiro entre contas
+void tranferencia(){
+  limpaBuffer();
+  printf("Bem vindo a area de transferencia\n");
+  printf("Para realizar a operacao preciso que voce me forneca algumas informacoes\n");
+  
+  // Pega o CPF do cliente
+  char cpf_debito[12];
+  printf("Primeiro, digite o seu CPF:\n->");
+  scanf("%s", cpf_debito);
+
+  // Usa a função procurar clientes, para achar o arquivo correto
+  Cliente *pCliente1 = procuraCliente(cpf_debito);
+
+  // Confere se o CPF existe
+  if (pCliente1 == NULL) {
+    printf("\nEsse CPF nao pertence a nenhum cliente!\n");
+    return; 
+  }
+
+  // Pega a senha do cliente
+  char senha_d[12];
+  printf("Agora, digite a sua senha:\n->");
+  scanf("%s", senha_d);
+
+  // Confere se a senha está correta
+  if (strcmp(senha_d, pCliente1 -> senha) != 0) {
+    printf("Senha incorreta!\n");
+    return;
+  }
+
+  // Pega o CPF da conta que vai receber a transferencia
+  char cpf_destino[12];
+  printf("Agora, digite o CPF da conta para a qual deseja transferir:\n->");
+  scanf("%s", cpf_destino);
+
+  // Usa a função procurarCliente, para achar o arquivo correto
+  Cliente *pCliente2 = procuraCliente(cpf_destino);
+
+  // Confere se o CPF existe
+  if (pCliente2 == NULL) {
+    printf("\nEsse CPF não pertence a nenhum cliente!\n");
+    return; 
+  }
+
+  // Pega o valor do debito
+  double valor;
+  printf("Para finalizar, digite o valor que deseja transferir:\n->");
+  scanf("%lf", &valor);
+
+  double saldo_final = (pCliente1 -> saldo) - valor;
+  if (pCliente1 -> account_type == 1) {
+    if (saldo_final < -1000) {
+      printf("Saldo insuficiente!\n");
+      return;
+    } else{
+        pCliente1 -> saldo = saldo_final;
+        pCliente2 -> saldo = pCliente2 -> saldo + valor;
+        printf("Transferencia realizada com sucesso!\n");
+        printf("Saldo atual: %.2f\n", pCliente1 -> saldo);
+    }
+  } else {
+    if (saldo_final < -5000) {
+      printf("Saldo insuficiente!\n");
+      return;
+    } else {
+      pCliente1 -> saldo = saldo_final;
+      pCliente2 -> saldo = pCliente2 -> saldo + valor;
+      printf("Transferencia realizada com sucesso!\n");
+      printf("Saldo atual: %.2f\n", pCliente1 -> saldo);
+    };
+  };
+  // adicionar o valor das transferencias nos extratos
+  limpaBuffer();
 }
