@@ -7,7 +7,7 @@ int operador;
 
 int main() {
   criarDiretorioClientes();
-  
+
   do{
   
 
@@ -38,7 +38,7 @@ int main() {
       debito();
       break;
     case 5:
-      // Aqui vem a funcao de efetuar deposito
+      deposito();
       break;
     case 6:
       // Aqui vem a funcao de exibir o extrato

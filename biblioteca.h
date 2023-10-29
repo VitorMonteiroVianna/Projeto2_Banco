@@ -23,5 +23,6 @@ void listaClientes();
 
 void debito();
 
+void deposito();
 
 #endif

@@ -310,3 +310,34 @@ void debito (){
   };
   // adicionar o valor do debito no extrato
 };
+
+// Funcao para efetuar um deposito
+void deposito(){
+  printf("Bem vindo a area de deposito\n");
+  printf("Para realizar a operacao preciso que voce me forneca algumas informacoes\n");
+  
+  // Pega o CPF do cliente
+  char cpf_deposito[12];
+  printf("Primeiro, digite o CPF da conta em que deseja depositar:\n->");
+  scanf("%s", cpf_deposito);
+
+  // Usa a função procurar clientes, para achar o arquivo correto
+  Cliente *pCliente = procuraCliente(cpf_deposito);
+
+  // Confere se o CPF existe
+  if (pCliente == NULL) {
+    printf("\nEsse CPF não pertence a nenhum cliente!\n");
+    return; 
+  }
+
+  // Pega o valor do deposito
+  double valor;
+  printf("Para finalizar, digite o valor que deseja depositar:\n->");
+  scanf("%lf", &valor);
+
+  pCliente -> saldo = pCliente -> saldo + valor;
+  printf("Deposito realizado com sucesso!\n");
+  printf("Saldo atual: %.2f\n", pCliente -> saldo);
+
+  // adicionar o valor do deposito no extrato
+}
