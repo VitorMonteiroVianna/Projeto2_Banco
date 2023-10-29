@@ -54,3 +54,7 @@ build/CMakeFiles/Projeto2_banco.dir/objects1.rsp
 build/CMakeFiles/Projeto2_banco.dir/progress.make
 
 *.exe
+CLIENTES/12345678910/extrato.bin
+CLIENTES/12345678910/info.bin
+CLIENTES/12345678911/extrato.bin
+CLIENTES/12345678911/info.bin
