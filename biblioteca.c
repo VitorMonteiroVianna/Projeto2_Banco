@@ -360,6 +360,9 @@ void deposito(){
   printf("Deposito realizado com sucesso!\n");
   printf("Saldo atual: %.2f\n", pCliente -> saldo);
 
+  // atualiza o saldo do cliente
+  atualiza_cliente(cpf_deposito, pCliente);
+
   // adicionar o valor do deposito no extrato
   limpaBuffer();
 }
@@ -371,12 +374,12 @@ void tranferencia(){
   printf("Para realizar a operacao preciso que voce me forneca algumas informacoes\n");
   
   // Pega o CPF do cliente
-  char cpf_debito[12];
+  char cpf_origem[12];
   printf("Primeiro, digite o seu CPF:\n->");
-  scanf("%s", cpf_debito);
+  scanf("%s", cpf_origem);
 
   // Usa a função procurar clientes, para achar o arquivo correto
-  Cliente *pCliente1 = procuraCliente(cpf_debito);
+  Cliente *pCliente1 = procuraCliente(cpf_origem);
 
   // Confere se o CPF existe
   if (pCliente1 == NULL) {
@@ -385,12 +388,12 @@ void tranferencia(){
   }
 
   // Pega a senha do cliente
-  char senha_d[12];
+  char senha_origem[12];
   printf("Agora, digite a sua senha:\n->");
-  scanf("%s", senha_d);
+  scanf("%s", senha_origem);
 
   // Confere se a senha está correta
-  if (strcmp(senha_d, pCliente1 -> senha) != 0) {
+  if (strcmp(senha_origem, pCliente1 -> senha) != 0) {
     printf("Senha incorreta!\n");
     return;
   }
@@ -424,6 +427,8 @@ void tranferencia(){
         pCliente2 -> saldo = pCliente2 -> saldo + valor;
         printf("Transferencia realizada com sucesso!\n");
         printf("Saldo atual: %.2f\n", pCliente1 -> saldo);
+        atualiza_cliente(cpf_origem, pCliente1);
+        atualiza_cliente(cpf_destino, pCliente2);
     }
   } else {
     if (saldo_final < -5000) {
@@ -434,6 +439,8 @@ void tranferencia(){
       pCliente2 -> saldo = pCliente2 -> saldo + valor;
       printf("Transferencia realizada com sucesso!\n");
       printf("Saldo atual: %.2f\n", pCliente1 -> saldo);
+      atualiza_cliente(cpf_origem, pCliente1);
+      atualiza_cliente(cpf_destino, pCliente2);
     };
   };
   // adicionar o valor das transferencias nos extratos
