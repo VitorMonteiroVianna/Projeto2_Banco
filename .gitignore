@@ -7,8 +7,7 @@
 /dataSources/
 /dataSources.local.xml
 
-
-.vscode/tasks.json
+.vscode/
 build/cmake_install.cmake
 build/CMakeCache.txt
 build/compile_commands.json
@@ -52,9 +51,6 @@ build/CMakeFiles/Projeto2_banco.dir/main.c.obj.d
 build/CMakeFiles/Projeto2_banco.dir/objects.a
 build/CMakeFiles/Projeto2_banco.dir/objects1.rsp
 build/CMakeFiles/Projeto2_banco.dir/progress.make
+/CLIENTES/
 
 *.exe
-CLIENTES/12345678910/extrato.bin
-CLIENTES/12345678910/info.bin
-CLIENTES/12345678911/extrato.bin
-CLIENTES/12345678911/info.bin

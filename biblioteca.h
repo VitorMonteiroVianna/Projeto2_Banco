@@ -19,4 +19,11 @@ void novo_cliente();
 
 void criarDiretorioClientes();
 
+void apaga_cliente();
+
+void resgataInfo_cliente(const char *cpf);
+
+void listaClientes();
+
+
 #endif // PROJETO2_BANCO_BIBLIOTECA_H

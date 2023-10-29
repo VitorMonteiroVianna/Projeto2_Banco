@@ -1,3 +1,0 @@
-C:/Users/unifhnomura/CLionProjects/Projeto2_Banco/cmake-build-debug/CMakeFiles/Projeto2_banco.dir
-C:/Users/unifhnomura/CLionProjects/Projeto2_Banco/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/unifhnomura/CLionProjects/Projeto2_Banco/cmake-build-debug/CMakeFiles/rebuild_cache.dir
