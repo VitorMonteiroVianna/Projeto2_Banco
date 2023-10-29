@@ -7,7 +7,6 @@
 /dataSources/
 /dataSources.local.xml
 
-
 .vscode/
 build/cmake_install.cmake
 build/CMakeCache.txt

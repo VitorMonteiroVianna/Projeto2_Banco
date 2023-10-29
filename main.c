@@ -27,10 +27,10 @@ int main() {
     break;
   case 2:
     apaga_cliente();
-
     break;
   case 3:
     // Aqui vem a funcao de Listar clientes
+    listaClientes();
     break;
   case 4:
     // Aqui vem a funcao de efetuar debito

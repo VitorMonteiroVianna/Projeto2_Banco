@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <dirent.h>
+
 #include "biblioteca.h"
 
 // funcao para limpar o lixo de memoria
@@ -158,18 +160,76 @@ void apaga_cliente() {
 
   // caminho para apagar o arquivo cliente
   sprintf(pastaCliente_excluir, "CLIENTES/%s/info.bin", cpf_excluido);
-  remove(pastaCliente_excluir); // arquivo cpf apagado
+  remove(pastaCliente_excluir); 
+
   // caminho para apagar o arquivo TXT
   sprintf(pastaCliente_excluir, "CLIENTES/%s/extrato.bin", cpf_excluido);
   remove(pastaCliente_excluir); // arquivo txt apagado
-  // apagando o diretorio
+
+  // Parte responsavel por apagar a pasta vazia *********
   strcpy(caminhoCompleto, "CLIENTES/");
   strcat(caminhoCompleto, cpf_excluido);
-  rmdir(caminhoCompleto); // a pasta referente ao cpf foi removida
-  printf("\nCONTA REMOVIDA!\n");
-  sleep(1);
-  printf("Ate logo...\n");
-  sleep(1);
+  remove(caminhoCompleto); 
+
+  printf("\nConta excluida!!\n");
 
   limpaBuffer();
 }
+
+//Função criada para retornar as informações formatadas de um cliente especifico 
+void pegaInfo_cliente(const char *cpf) {
+    char nomePasta[120]; 
+    //Cria o caminho completo para abrir a pasta do cliente
+    snprintf(nomePasta, sizeof(nomePasta), "CLIENTES/%s", cpf);
+
+    char nomeArquivo[150];
+    snprintf(nomeArquivo, sizeof(nomeArquivo), "%s/info.bin", nomePasta);
+
+    FILE *arquivo = fopen(nomeArquivo, "rb");
+
+    Cliente cliente;
+
+    //Le o arquivo e passa seu valores para o Struct cliente
+    size_t lidos = fread(&cliente, sizeof(Cliente), 1, arquivo);
+
+    printf("   Nome: %s\n", cliente.nome);
+    printf("   Tipo de conta: %d\n", cliente.account_type);
+    printf("   Valor inicial: %.2f\n", cliente.valor_init);
+    printf("   Senha: %s\n\n", cliente.senha);
+
+    fclose(arquivo);
+}
+
+void listaClientes() {
+    const char *diretorio = "CLIENTES";
+    struct dirent *entry;
+    DIR *dir;
+
+    dir = opendir(diretorio);
+
+    printf("Lista de clientes ativos:\n");
+
+    //Cria um contador para saber a quantidade de clientes
+    int count = 0;
+
+    //Laço while para listar o nome de cada pasta (CPF do cliente)
+    while ((entry = readdir(dir)) != NULL) {
+        if (entry->d_type == DT_DIR) {
+            if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0) {
+                printf("%s\n", entry->d_name);
+
+                pegaInfo_cliente(entry->d_name); // Usa o nome da pasta para pegar o CPF e chama a função responsavel por formatar as infos do cliente
+
+                count ++;
+            }
+        }
+    }
+
+    closedir(dir);
+
+    //Caso o contador se mantenha em 0 não existem clientes
+    if (count == 0){
+      printf("====>Não existem clientes cadastrados");
+    }
+}
+
