@@ -1,7 +1,3 @@
-//
-// Created by vmont on 28/09/2023.
-//
-
 #ifndef PROJETO2_BANCO_BIBLIOTECA_H
 #define PROJETO2_BANCO_BIBLIOTECA_H
 
@@ -24,6 +20,5 @@ void apaga_cliente();
 void resgataInfo_cliente(const char *cpf);
 
 void listaClientes();
-
 
 #endif // PROJETO2_BANCO_BIBLIOTECA_H
