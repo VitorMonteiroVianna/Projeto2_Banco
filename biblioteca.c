@@ -23,22 +23,31 @@ void criarDiretorioClientes() {
     }
 }
 
+// Funcao para criar o arquivo extrato.txt
 void *criarExt(char cpf_extrato[12]) {
+  limpaBuffer();
+  // Pega o caminho do arquivo
   char path[30];
   sprintf(path, "CLIENTES/%s/extrato.bin", cpf_extrato);
+  // Cria o arquivo
   FILE *extrato = fopen(path, "wb");
   fclose(extrato);
   return 0;
 }
 
-//Funcao feita para achar um cliente especifico
-Cliente *procuraCliente(char cpf[12]) { 
+// Funcao feita para achar um cliente especifico
+Cliente *procuraCliente(char cpf[12]) {
+  limpaBuffer();
+  // Defino o caminho do arquivo
   char path[30];
-  sprintf(path, "CLIENTES/%s/info.bin", cpf); // Defino o caminho
+  sprintf(path, "CLIENTES/%s/info.bin", cpf);
 
   //Inicia a logica de verificação do cliente
+
+  // Cria um ponteiro para o arquivo
   Cliente *pCliente = (Cliente *)malloc(sizeof(Cliente)); 
-  FILE *t = fopen(path, "rb"); 
+  FILE *t = fopen(path, "rb");
+  // Verifica se o arquivo existe
   if (t == NULL)            
     return NULL;
   fread(pCliente, sizeof(Cliente), 1, t);
@@ -46,6 +55,32 @@ Cliente *procuraCliente(char cpf[12]) {
   return pCliente;
 }
 
+// Função criada para retornar as informações formatadas de um cliente especifico 
+void pegaInfo_cliente(const char *cpf) {
+    limpaBuffer();
+    char nomePasta[120]; 
+    //Cria o caminho completo para abrir a pasta do cliente
+    snprintf(nomePasta, sizeof(nomePasta), "CLIENTES/%s", cpf);
+
+    // Cria o caminho completo para abrir o arquivo info.bin
+    char nomeArquivo[150];
+    snprintf(nomeArquivo, sizeof(nomeArquivo), "%s/info.bin", nomePasta);
+
+    // Abre o arquivo
+    FILE *arquivo = fopen(nomeArquivo, "rb");
+
+    Cliente cliente;
+
+    //Le o arquivo e passa seu valores para o Struct cliente
+    size_t lidos = fread(&cliente, sizeof(Cliente), 1, arquivo);
+
+    printf("   Nome: %s\n", cliente.nome);
+    printf("   Tipo de conta: %d\n", cliente.account_type);
+    printf("   Valor inicial: %.2f\n", cliente.saldo);
+    printf("   Senha: %s\n\n", cliente.senha);
+
+    fclose(arquivo);
+}
 
 // Cria um novo cliente
 void novo_cliente() {
@@ -54,34 +89,26 @@ void novo_cliente() {
   Cliente novoCliente;
   Cliente *pCliente = (Cliente *)malloc(sizeof(Cliente)); // Ponteiro para a struct Cliente
 
-  // sessao UX
+  // Sessao UX
   printf("Bem vindo ao Banco Quem Poupa Tem\n");
   printf("Para continuar com a criacao da sua conta preciso que voce me "
          "forneca algumas informacoes, ok?\n");
   printf("Vamos la\n");
-  printf("Para continuar com a criaçao da sua conta preciso que você me "
-         "forneça algumas informações, ok?\n");
-  printf("Vamos la\n");
 
   // Solicita informacoes do cliente
   printf("Para comecar, digite o seu nome: ");
-  fgets(pCliente->nome, sizeof(pCliente->nome), stdin);
-  pCliente->nome[strcspn(pCliente->nome, "\n")] = '\0'; // Remove o caractere de nova linha
-
-  int valido = 0;
-  pCliente->nome[strcspn(pCliente->nome, "\n")] = '\0'; // Remove o caractere de nova linha
+  fgets(pCliente -> nome, sizeof(pCliente -> nome), stdin);
+  pCliente -> nome[strcspn(pCliente -> nome, "\n")] = '\0'; // Remove o caractere de nova linha
 
   int valido = 0;
   do{
       printf("\nMuito bem\n");
       printf("Agora, informe seu CPF: ");
-      fgets(pCliente->CPF, sizeof(pCliente->CPF), stdin);
-      pCliente->CPF[strcspn(pCliente->CPF, "\n")] = '\0'; // Remove o caractere de nova linha
+      fgets(pCliente -> CPF, sizeof(pCliente -> CPF), stdin);
+      pCliente -> CPF[strcspn(pCliente -> CPF, "\n")] = '\0'; // Remove o caractere de nova linha
 
       // Verifica se o CPF tem 11 digitos
-      if (strlen(pCliente->CPF) == 11) {
-      // Verifica se o CPF tem 11 digitos
-      if (strlen(pCliente->CPF) == 11) {
+      if (strlen(pCliente -> CPF) == 11) {
           valido = 1;
       } else {
           printf("CPF invalido. Tente novamente.\n");
@@ -100,54 +127,55 @@ void novo_cliente() {
   // condicao para que o valor da conta seja somente 1 ou 2
   do {
     printf("\nDigite 1 para COMUM ou 2 para PLUS): ");
-    scanf("%d", &(pCliente->account_type));
-    if (pCliente->account_type != 1 && pCliente->account_type != 2)
+    scanf("%d", &(pCliente -> account_type));
+    if (pCliente -> account_type != 1 && pCliente -> account_type != 2)
       printf("Dados invalidos!\n");
 
-  } while (pCliente->account_type != 1 && pCliente->account_type != 2);
+  } while (pCliente -> account_type != 1 && pCliente -> account_type != 2);
 
   // garante que o valor inicial seja maior que zero
   do {
     printf("\nCerto, estamos quase terminando\n");
     printf("Informe o valor inicial da sua conta: \n");
-    scanf("%lf", &(pCliente->valor_init));
-    if (pCliente->valor_init < 0)
+    scanf("%lf", &(pCliente -> saldo));
+    if (pCliente -> saldo < 0)
       printf("Por favor digite um valor maior que zero\n");
-  } while (pCliente->valor_init < 0);
+  } while (pCliente -> saldo < 0);
 
   printf("\nAgora vamos finalizar\n");
   printf("Escolha uma senha segura e nao compartilhe com ninguem\n");
-  printf("Escolha uma senha segura e nao compartilhe com ninguem\n");
-  scanf("%s", pCliente->senha);
+  scanf("%s", pCliente -> senha);
 
   // Exibe os dados do cliente
   printf("\nDados do novo cliente:\n");
-  printf("Nome: %s\n", pCliente->nome);
+  printf("Nome: %s\n", pCliente -> nome);
   printf("CPF: %s\n",  pCliente -> CPF);
   printf("Tipo de conta: %d\n", pCliente -> account_type);
-  printf("Valor inicial: R$%.2lf\n", pCliente -> valor_init);
+  printf("Valor inicial: R$%.2lf\n", pCliente -> saldo);
   printf("Senha: %s\n", pCliente -> senha);
 
   char path[50]; // create a buffer para o caminho do diretorio
-  sprintf(path, "CLIENTES/%s", pCliente->CPF); // gerar o caminho do diretorio
+  sprintf(path, "CLIENTES/%s", pCliente -> CPF); // gerar o caminho do diretorio
   mkdir(path); // criar o diretorio
 
   // Abrindo o arquivo para colocar os valores la dentro.
-  sprintf(path, "CLIENTES/%s/info.bin", pCliente->CPF); // gerar o caminho do arquivo
+  sprintf(path, "CLIENTES/%s/info.bin", pCliente -> CPF); // gerar o caminho do arquivo
   FILE *f = fopen(path, "wb");
   fwrite(pCliente, sizeof(Cliente), 1, f);
   fclose(f);
 
   // cria o arquivo extrato.txt dentro da pasta do cliente
-  criarExt(pCliente->CPF); 
+  criarExt(pCliente -> CPF); 
 
   free(pCliente); // libera a memoria alocada para o ponteiro pCliente
   limpaBuffer();
   return;
 }
 
+// Funcao para exluir uma conta
 void apaga_cliente() {
-  char cpf_excluido[12]; // declaro a variavel que vai receber o CPF que será excluido
+  limpaBuffer();
+  char cpf_excluido[12]; // Declaro a variavel que vai receber o CPF que será excluido
   printf("\n=====================================\n");
   printf("OK, Vamos apagar sua conta!\n");
   printf("Para isso, basta que me passe seu CPF:\n->");
@@ -166,12 +194,11 @@ void apaga_cliente() {
   char pastaCliente_excluir[30];
   char caminhoCompleto[100]; 
 
-
-  // caminho para apagar o arquivo cliente
+  // Caminho para apagar o arquivo cliente
   sprintf(pastaCliente_excluir, "CLIENTES/%s/info.bin", cpf_excluido);
   remove(pastaCliente_excluir); 
 
-  // caminho para apagar o arquivo TXT
+  // Caminho para apagar o arquivo TXT
   sprintf(pastaCliente_excluir, "CLIENTES/%s/extrato.bin", cpf_excluido);
   remove(pastaCliente_excluir); // arquivo txt apagado
 
@@ -185,31 +212,9 @@ void apaga_cliente() {
   limpaBuffer();
 }
 
-//Função criada para retornar as informações formatadas de um cliente especifico 
-void pegaInfo_cliente(const char *cpf) {
-    char nomePasta[120]; 
-    //Cria o caminho completo para abrir a pasta do cliente
-    snprintf(nomePasta, sizeof(nomePasta), "CLIENTES/%s", cpf);
-
-    char nomeArquivo[150];
-    snprintf(nomeArquivo, sizeof(nomeArquivo), "%s/info.bin", nomePasta);
-
-    FILE *arquivo = fopen(nomeArquivo, "rb");
-
-    Cliente cliente;
-
-    //Le o arquivo e passa seu valores para o Struct cliente
-    size_t lidos = fread(&cliente, sizeof(Cliente), 1, arquivo);
-
-    printf("   Nome: %s\n", cliente.nome);
-    printf("   Tipo de conta: %d\n", cliente.account_type);
-    printf("   Valor inicial: %.2f\n", cliente.valor_init);
-    printf("   Senha: %s\n\n", cliente.senha);
-
-    fclose(arquivo);
-}
-
+// Funcao para listar todos os clientes
 void listaClientes() {
+    limpaBuffer();
     const char *diretorio = "CLIENTES";
     struct dirent *entry;
     DIR *dir;
@@ -223,11 +228,11 @@ void listaClientes() {
 
     //Laço while para listar o nome de cada pasta (CPF do cliente)
     while ((entry = readdir(dir)) != NULL) {
-        if (entry->d_type == DT_DIR) {
-            if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0) {
-                printf("%s\n", entry->d_name);
+        if (entry -> d_type == DT_DIR) {
+            if (strcmp(entry -> d_name, ".") != 0 && strcmp(entry -> d_name, "..") != 0) {
+                printf("%s\n", entry -> d_name);
 
-                pegaInfo_cliente(entry->d_name); // Usa o nome da pasta para pegar o CPF e chama a função responsavel por formatar as infos do cliente
+                pegaInfo_cliente(entry -> d_name); // Usa o nome da pasta para pegar o CPF e chama a função responsavel por formatar as infos do cliente
 
                 count ++;
             }
@@ -242,3 +247,66 @@ void listaClientes() {
     }
 }
 
+// Funcao para efetuar um debito
+void debito (){
+  printf("Bem vindo a area de debito\n");
+  printf("Para realizar a operacao preciso que voce me forneca algumas informacoes\n");
+  
+  // Pega o CPF do cliente
+  char cpf_debito[12];
+  printf("Primeiro, digite o seu CPF:\n->");
+  scanf("%s", cpf_debito);
+
+  // Usa a função procurar clientes, para achar o arquivo correto
+  Cliente *pCliente = procuraCliente(cpf_debito);
+
+  // Confere se o CPF existe
+  if (pCliente == NULL) {
+    printf("\nEsse CPF não pertence a nenhum cliente!\n");
+    return; 
+  }
+
+  // Pega a senha do cliente
+  char senha_d[12];
+  printf("Agora, digite a sua senha:\n->");
+  scanf("%s", senha_d);
+
+  // Confere se a senha está correta
+  if (strcmp(senha_d, pCliente -> senha) != 0) {
+    printf("Senha incorreta!\n");
+    return;
+  }
+
+  // Pega o valor do debito
+  double valor;
+  printf("Para finalizar, digite o valor que deseja debitar:\n->");
+  scanf("%lf", &valor);
+
+  // Logica para calcular a taxa de acordo com o tipo de conta e verificacao de saldo negativo
+  float taxa;
+  if (pCliente -> account_type == 1) {
+    taxa = 0.05;
+    double saldo_final = (pCliente -> saldo) - (valor * taxa);
+    if (saldo_final < -1000) {
+      printf("Saldo insuficiente!\n");
+      return;
+    }
+    else{
+        pCliente -> saldo = saldo_final;
+        printf("Debito realizado com sucesso!\n");
+        printf("Saldo atual: %.2f\n", pCliente -> saldo);
+        }   
+  } else {
+    taxa = 0.03;
+    double saldo_final = (pCliente -> saldo) - (valor * taxa);
+    if (saldo_final < -5000) {
+      printf("Saldo insuficiente!\n");
+      return;
+    } else {
+      pCliente -> saldo = saldo_final;
+      printf("Debito realizado com sucesso!\n");
+      printf("Saldo atual: %.2f\n", pCliente -> saldo);
+    };
+  };
+  // adicionar o valor do debito no extrato
+};

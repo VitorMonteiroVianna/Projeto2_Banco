@@ -1,7 +1,3 @@
-//
-// Created by vmont on 28/09/2023.
-//
-
 #ifndef PROJETO2_BANCO_BIBLIOTECA_H
 #define PROJETO2_BANCO_BIBLIOTECA_H
 
@@ -9,7 +5,7 @@ typedef struct Cliente {
   char nome[100];
   char CPF[12];
   int account_type;
-  double valor_init;
+  double saldo;
   char senha[20];
 } Cliente;
 
@@ -25,5 +21,7 @@ void resgataInfo_cliente(const char *cpf);
 
 void listaClientes();
 
+void debito();
 
-#endif // PROJETO2_BANCO_BIBLIOTECA_H
+
+#endif
