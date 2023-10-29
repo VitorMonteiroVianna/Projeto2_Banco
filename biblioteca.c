@@ -216,6 +216,13 @@ void novo_cliente() {
   // cria o arquivo extrato.txt dentro da pasta do cliente
   criarExt(pCliente -> CPF); 
 
+  //Cria a mensagem de texto completa para o extrato
+  char mensagemExtrato[100];
+  sprintf(mensagemExtrato, "Conta criada: NOME: %s, CPF: %s, Tipo de Conta: %d, Saldo: %2lf", pCliente -> nome, pCliente -> CPF, pCliente -> account_type,pCliente -> saldo);
+
+  //Insere a mensagem formatada no extrato
+  insereExtrato(pCliente -> CPF, mensagemExtrato);
+
   free(pCliente); // libera a memoria alocada para o ponteiro pCliente
   limpaBuffer();
   return;
@@ -369,13 +376,13 @@ void debito (){
       printf("Debito realizado com sucesso!\n");
       printf("Saldo atual: %.2f\n", pCliente -> saldo);
       atualiza_cliente(cpf_debito, pCliente);
+
     };
   };
 
-  //Cria a mensagem de texto comppleta
+  //Cria a mensagem de texto completa
   char mensagemExtrato[100];
-  sprintf(mensagemExtrato, "DEBITO de %.2lf na conta %s com taxa %.2lf", valor, cpf_debito, mensagemExtrato_TipoConta);
-
+  sprintf(mensagemExtrato, "DEBITO de %.2lf na conta %s com taxa %s. Novo saldo: %.2lf", valor, cpf_debito, mensagemExtrato_TipoConta, pCliente->saldo);
   insereExtrato(cpf_debito, mensagemExtrato);
 
   limpaBuffer();
@@ -413,9 +420,16 @@ void deposito(){
   // atualiza o saldo do cliente
   atualiza_cliente(cpf_deposito, pCliente);
 
-  // adicionar o valor do deposito no extrato
+
+  char mensagemExtrato[100];
+  sprintf(mensagemExtrato, "DEPOSITO de %.2lf na conta %s. Novo saldo: %.2f", valor, cpf_deposito, pCliente -> saldo);
+  insereExtrato(cpf_deposito, mensagemExtrato);
+
   limpaBuffer();
 }
+
+
+
 
 void exibeExtrato(){
 
@@ -502,6 +516,16 @@ void tranferencia(){
       atualiza_cliente(cpf_destino, pCliente2);
     };
   };
+
+  //Crio as mensagens para inserir no extrato e as insiro
+  char mensagemExtrato_cpfOrigem[100];
+  char mensagemExtrato_cpfDestino[100];
+  sprintf(mensagemExtrato_cpfOrigem, "Transferencia feita de %.2lf para conta %s. Novo saldo: %.2lf", valor, cpf_destino, pCliente1 -> saldo);
+  sprintf(mensagemExtrato_cpfDestino, "Transferencia recebida de %.2lf da conta %s. Novo saldo: %.2lf", valor, cpf_origem, pCliente2 -> saldo);
+  insereExtrato(cpf_origem, mensagemExtrato_cpfOrigem);
+  insereExtrato(cpf_destino, mensagemExtrato_cpfDestino);
+
+
   // adicionar o valor das transferencias nos extratos
   limpaBuffer();
 }
