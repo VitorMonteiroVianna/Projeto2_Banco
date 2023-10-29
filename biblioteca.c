@@ -82,6 +82,22 @@ void pegaInfo_cliente(const char *cpf) {
     fclose(arquivo);
 }
 
+// Funcao para atualizar o saldo
+void *atualiza_cliente(const char *cpf, Cliente *cliente){
+  // Defino o caminho do arquivo
+  char path[30];
+  sprintf(path, "CLIENTES/%s/info.bin", cpf);
+
+  // Abre o arquivo
+  FILE *a = fopen(path, "wb");
+  // Verifica se o arquivo existe
+  if (a == NULL)            
+    return NULL;
+  fwrite(cliente, sizeof(Cliente), 1, a);
+  fclose(a);
+  return 0;
+}
+
 // Cria um novo cliente
 void novo_cliente() {
   limpaBuffer();
@@ -286,7 +302,7 @@ void debito (){
   // Logica para calcular a taxa de acordo com o tipo de conta e verificacao de saldo negativo
   float taxa;
   if (pCliente -> account_type == 1) {
-    taxa = 0.05;
+    taxa = 1.05;
     double saldo_final = (pCliente -> saldo) - (valor * taxa);
     if (saldo_final < -1000) {
       printf("Saldo insuficiente!\n");
@@ -296,9 +312,10 @@ void debito (){
         pCliente -> saldo = saldo_final;
         printf("Debito realizado com sucesso!\n");
         printf("Saldo atual: %.2f\n", pCliente -> saldo);
+        atualiza_cliente(cpf_debito, pCliente);
         }   
   } else {
-    taxa = 0.03;
+    taxa = 1.03;
     double saldo_final = (pCliente -> saldo) - (valor * taxa);
     if (saldo_final < -5000) {
       printf("Saldo insuficiente!\n");
@@ -307,6 +324,7 @@ void debito (){
       pCliente -> saldo = saldo_final;
       printf("Debito realizado com sucesso!\n");
       printf("Saldo atual: %.2f\n", pCliente -> saldo);
+      atualiza_cliente(cpf_debito, pCliente);
     };
   };
   // adicionar o valor do debito no extrato

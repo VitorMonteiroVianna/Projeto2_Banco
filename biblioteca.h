@@ -15,6 +15,8 @@ void novo_cliente();
 
 void criarDiretorioClientes();
 
+void *atualiza_cliente(const char *cpf, Cliente *cliente);
+
 void apaga_cliente();
 
 void resgataInfo_cliente(const char *cpf);
