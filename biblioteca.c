@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <time.h>
 
 #include "biblioteca.h"
 
@@ -28,12 +29,44 @@ void *criarExt(char cpf_extrato[12]) {
   limpaBuffer();
   // Pega o caminho do arquivo
   char path[30];
-  sprintf(path, "CLIENTES/%s/extrato.bin", cpf_extrato);
+  sprintf(path, "CLIENTES/%s/extrato.txt", cpf_extrato);
   // Cria o arquivo
-  FILE *extrato = fopen(path, "wb");
+  FILE *extrato = fopen(path, "w");
   fclose(extrato);
   return 0;
 }
+
+//Função que irá inserir as informações de extrato formatadas
+void insereExtrato(const char *CPF, const char *mensagem) {
+    // Define o caminho para o extrato
+    char caminhoArquivo[100];
+    snprintf(caminhoArquivo, sizeof(caminhoArquivo), "CLIENTES/%s/extrato.txt", CPF);
+
+    //Abre o arquivo e trata um possivel erro
+    FILE *arquivo = fopen(caminhoArquivo, "a");
+
+    if (arquivo == NULL) {
+        perror("Erro ao abrir o arquivo de extrato");
+        return;
+    }
+
+    // Cria as variaveis com data e hora
+    time_t tempoAtual;
+    struct tm *infoTempo;
+    char dataHora[100];
+    time(&tempoAtual);
+    infoTempo = localtime(&tempoAtual);
+    strftime(dataHora, sizeof(dataHora), "%Y-%m-%d  %H:%M:%S", infoTempo);
+
+    // Faz a formatação da mensagem
+    char linha[256];
+    snprintf(linha, sizeof(linha), "|%s| ==> %s\n", dataHora, mensagem);
+
+    // Insere as informacoes e fecha o arquivo
+    fputs(linha, arquivo);
+    fclose(arquivo);
+}
+
 
 // Funcao feita para achar um cliente especifico
 Cliente *procuraCliente(char cpf[12]) {
@@ -237,7 +270,7 @@ void listaClientes() {
 
     dir = opendir(diretorio);
 
-    printf("Lista de clientes ativos:\n");
+    printf("\nLista de clientes ativos (pressione ENTER para continuar):\n");
 
     //Cria um contador para saber a quantidade de clientes
     int count = 0;
@@ -299,9 +332,16 @@ void debito (){
   printf("Para finalizar, digite o valor que deseja debitar:\n->");
   scanf("%lf", &valor);
 
+  //Declaro o tipo de conta que será usado para facilitar na criação do EXTRATO
+  char mensagemExtrato_TipoConta[100];
+
   // Logica para calcular a taxa de acordo com o tipo de conta e verificacao de saldo negativo
   float taxa;
   if (pCliente -> account_type == 1) {
+
+    //Defino a parte da mensagem de taxa que irá para o extrato
+    strcpy(mensagemExtrato_TipoConta, "5%");
+
     taxa = 1.05;
     double saldo_final = (pCliente -> saldo) - (valor * taxa);
     if (saldo_final < -1000) {
@@ -316,6 +356,10 @@ void debito (){
         }   
   } else {
     taxa = 1.03;
+
+    //Defino a parte da mensagem de taxa que irá para o extrato
+    strcpy(mensagemExtrato_TipoConta, "3%");
+
     double saldo_final = (pCliente -> saldo) - (valor * taxa);
     if (saldo_final < -5000) {
       printf("Saldo insuficiente!\n");
@@ -327,7 +371,13 @@ void debito (){
       atualiza_cliente(cpf_debito, pCliente);
     };
   };
-  // adicionar o valor do debito no extrato
+
+  //Cria a mensagem de texto comppleta
+  char mensagemExtrato[100];
+  sprintf(mensagemExtrato, "DEBITO de %.2lf na conta %s com taxa %.2lf", valor, cpf_debito, mensagemExtrato_TipoConta);
+
+  insereExtrato(cpf_debito, mensagemExtrato);
+
   limpaBuffer();
 };
 
@@ -366,6 +416,15 @@ void deposito(){
   // adicionar o valor do deposito no extrato
   limpaBuffer();
 }
+
+void exibeExtrato(){
+
+}
+
+
+
+
+
 
 // Funcao para transferir dinheiro entre contas
 void tranferencia(){
@@ -446,3 +505,5 @@ void tranferencia(){
   // adicionar o valor das transferencias nos extratos
   limpaBuffer();
 }
+
+
