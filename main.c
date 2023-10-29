@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "biblioteca.h"
 
 int main() {
   criarDiretorioClientes();
@@ -25,10 +26,11 @@ int main() {
     novo_cliente();
     break;
   case 2:
-    // Aqui vem a funcao de apagar cliente
+    apaga_cliente();
     break;
   case 3:
     // Aqui vem a funcao de Listar clientes
+    listaClientes();
     break;
   case 4:
     // Aqui vem a funcao de efetuar debito
