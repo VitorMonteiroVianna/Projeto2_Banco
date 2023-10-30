@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <dirent.h>
 #include <time.h>
-
+#include <sys/stat.h>
 #include "biblioteca.h"
 
 // funcao para limpar o lixo de memoria
@@ -19,7 +19,7 @@ void limpaBuffer() {
 
 // Cria uma pasta para armazenar as pastas com os clientes
 void criarDiretorioClientes() {
-    if (mkdir("CLIENTES") == 0) {
+    if (mkdir("CLIENTES", 0700) == 0) {
         printf("Diretorio CLIENTES criado com sucesso.\n");
     } else {
         printf("O diretorio CLIENTES ja existe ou ocorreu um erro ao cria-lo.\n");
@@ -207,7 +207,7 @@ void novo_cliente() {
 
   char path[50]; // create a buffer para o caminho do diretorio
   sprintf(path, "CLIENTES/%s", pCliente -> CPF); // gerar o caminho do diretorio
-  mkdir(path); // criar o diretorio
+  mkdir(path, 0700); // criar o diretorio
 
   // Abrindo o arquivo para colocar os valores la dentro.
   sprintf(path, "CLIENTES/%s/info.bin", pCliente -> CPF); // gerar o caminho do arquivo
