@@ -255,14 +255,13 @@ void apaga_cliente() {
   remove(pastaCliente_excluir); 
 
   // Caminho para apagar o arquivo TXT
-  sprintf(pastaCliente_excluir, "CLIENTES/%s/extrato.bin", cpf_excluido);
+  sprintf(pastaCliente_excluir, "CLIENTES/%s/extrato.txt", cpf_excluido);
   remove(pastaCliente_excluir); // arquivo txt apagado
 
   // Parte responsavel por apagar a pasta vazia *********
-  strcpy(caminhoCompleto, "CLIENTES/");
-  strcat(caminhoCompleto, cpf_excluido);
-  remove(caminhoCompleto); 
-
+  snprintf(caminhoCompleto, sizeof(caminhoCompleto), "CLIENTES/%s", cpf_excluido);
+  rmdir(caminhoCompleto); 
+  
   printf("\nConta excluida!!\n");
 
   limpaBuffer();
@@ -385,7 +384,9 @@ void debito (){
   sprintf(mensagemExtrato, "DEBITO de %.2lf na conta %s com taxa %s. Novo saldo: %.2lf", valor, cpf_debito, mensagemExtrato_TipoConta, pCliente->saldo);
   insereExtrato(cpf_debito, mensagemExtrato);
 
-  limpaBuffer();
+  limpaBuffer();  
+  free(pCliente); // libera a memoria alocada para o ponteiro pCliente
+
 };
 
 // Funcao para efetuar um deposito
@@ -425,6 +426,7 @@ void deposito(){
   sprintf(mensagemExtrato, "DEPOSITO de %.2lf na conta %s. Novo saldo: %.2f", valor, cpf_deposito, pCliente -> saldo);
   insereExtrato(cpf_deposito, mensagemExtrato);
 
+  free(pCliente); // libera a memoria alocada para o ponteiro pCliente
   limpaBuffer();
 };
 
@@ -481,6 +483,9 @@ void exibeExtrato() {
         printf("AVISO: essa mensagm pega somente os ultimos 100 registros. Para ver mais registros entre em CLIENTES -> CPF -> EXTRATO\n\n");
         fclose(arquivo);
     }
+
+    free(pCliente); // libera a memoria alocada para o ponteiro pCliente
+    limpaBuffer();
 }
 
 // Funcao para transferir dinheiro entre contas
@@ -570,6 +575,8 @@ void tranferencia(){
 
 
   // adicionar o valor das transferencias nos extratos
+  free(pCliente1); // libera a memoria alocada para o ponteiro pCliente
+  free(pCliente2); // libera a memoria alocada para o ponteiro pCliente
   limpaBuffer();
 }
 
