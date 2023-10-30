@@ -228,12 +228,14 @@ void novo_cliente() {
   return;
 }
 
-// Funcao para exluir uma conta
+// Funcao para apagar um cliente
 void apaga_cliente() {
   limpaBuffer();
-  char cpf_excluido[12]; // Declaro a variavel que vai receber o CPF que será excluido
   printf("\n=====================================\n");
   printf("OK, Vamos apagar sua conta!\n");
+
+  // Declaro a variavel que vai receber o CPF que será excluido
+  char cpf_excluido[12];
   printf("Para isso, basta que me passe seu CPF:\n->");
   scanf("%s", cpf_excluido);
 
@@ -258,8 +260,26 @@ void apaga_cliente() {
   sprintf(pastaCliente_excluir, "CLIENTES/%s/extrato.txt", cpf_excluido);
   remove(pastaCliente_excluir); // arquivo txt apagado
 
-  // Parte responsavel por apagar a pasta vazia *********
+  // Parte responsavel por apagar todos os arquivos dentro da pasta
   snprintf(caminhoCompleto, sizeof(caminhoCompleto), "CLIENTES/%s", cpf_excluido);
+  // Abre o diretorio
+  DIR *dir = opendir(caminhoCompleto);
+  struct dirent *entry;
+
+  // Loop para percorrer todos os arquivos dentro da pasta
+  while ((entry = readdir(dir)) != NULL) {
+    // Ignora os arquivos . e ..
+    if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0) {
+      char path[100];
+      // Cria o caminho completo para o arquivo
+      snprintf(path, sizeof(path), "%s/%s", caminhoCompleto, entry->d_name);
+      // Apaga o arquivo
+      remove(path);
+    }
+  }
+  closedir(dir);
+
+  // Parte responsavel por apagar a pasta vazia *********
   rmdir(caminhoCompleto); 
   
   printf("\nConta excluida!!\n");
