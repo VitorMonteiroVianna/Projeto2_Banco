@@ -251,7 +251,7 @@ void apaga_cliente() {
   }
 
   //Definos as variaveis que serão responsaveis por receber os caminhos dos arquivos
-  char pastaCliente_excluir[30];
+  char pastaCliente_excluir[40];
   char caminhoCompleto[100]; 
 
   // Caminho para apagar o arquivo cliente
