@@ -426,19 +426,62 @@ void deposito(){
   insereExtrato(cpf_deposito, mensagemExtrato);
 
   limpaBuffer();
+};
+
+//Função que irá exibir o extrato
+void exibeExtrato() {
+  limpaBuffer();
+  printf("Bem vindo a area de EXTRATO\n");
+  printf("Para realizar a operacao preciso que voce me forneca algumas informacoes\n");
+  
+  // Pega o CPF do cliente
+  char CPF[12];
+  printf("Digite o seu CPF:\n->");
+  scanf("%s", CPF);
+
+  // Usa a função procurar clientes, para achar o arquivo correto
+  Cliente *pCliente = procuraCliente(CPF);
+
+  // Confere se o CPF existe
+  if (pCliente == NULL) {
+    printf("\nEsse CPF não pertence a nenhum cliente!\n");
+    return; 
+  }
+
+  // Pega a senha do cliente
+  char senha_d[12];
+  printf("Agora, digite a sua senha:\n->");
+  scanf("%s", senha_d);
+
+  // Confere se a senha está correta
+  if (strcmp(senha_d, pCliente -> senha) != 0) {
+    printf("Senha incorreta!\n");
+    return;
+  }
+
+    // Pega o caminho da arquivo extrato
+    char caminho_arquivo[256];
+    snprintf(caminho_arquivo, sizeof(caminho_arquivo), "CLIENTES/%s/extrato.txt", CPF);
+
+    // Abre o arquivo com validações de ERRO 
+    FILE *arquivo = fopen(caminho_arquivo, "r");
+  
+    if (arquivo == NULL) {
+        printf("Arquivo de extrato não encontrado para o CPF %s. Confira se realmente é um cliente!\n", CPF);
+    } else {
+        char linha[100];  // Pega as 100 primeiras linhas
+        
+        printf("Extrato de CPF: %s\n", CPF);
+        
+        // Exibe o conteudo
+        while (fgets(linha, sizeof(linha), arquivo) != NULL) {
+            printf("%s", linha);
+        }
+
+        printf("AVISO: essa mensagm pega somente os ultimos 100 registros. Para ver mais registros entre em CLIENTES -> CPF -> EXTRATO\n\n");
+        fclose(arquivo);
+    }
 }
-
-
-
-
-void exibeExtrato(){
-
-}
-
-
-
-
-
 
 // Funcao para transferir dinheiro entre contas
 void tranferencia(){

@@ -41,7 +41,7 @@ int main() {
       deposito();
       break;
     case 6:
-      // Aqui vem a funcao de exibir o extrato
+      exibeExtrato();
       break;
     case 7:
       tranferencia();

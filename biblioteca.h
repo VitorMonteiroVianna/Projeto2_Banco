@@ -27,6 +27,8 @@ void debito();
 
 void deposito();
 
+void exibeExtrato();
+
 void tranferencia();
 
 #endif
