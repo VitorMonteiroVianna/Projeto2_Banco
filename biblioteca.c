@@ -30,7 +30,7 @@ void criarDiretorioClientes() {
 void *criarExt(char cpf_extrato[12]) {
   limpaBuffer();
   // Pega o caminho do arquivo
-  char path[30];
+  char path[40];
   sprintf(path, "CLIENTES/%s/extrato.txt", cpf_extrato);
   // Cria o arquivo
   FILE *extrato = fopen(path, "w");
