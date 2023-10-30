@@ -1,5 +1,7 @@
 ﻿# Projeto2_Banco
 
+-CODIGO FEITO POR VITOR MONTEIRO VIANNA RA: 22.223.085-6 E HUGO EMILIO NOMURA RA 22.123.051-9
+
 -Esse é um projeto feito inteiramente em C, com o intuito de simular um banco em um menu com interação feita toda dentro do CMD. O banco conta com as seguintes funções:
 
 -Criar um novo cliente
