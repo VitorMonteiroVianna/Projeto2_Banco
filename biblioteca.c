@@ -1,3 +1,5 @@
+//CODIGO FEITO POR VITOR MONTEIRO VIANNA RA: 22.223.085-6 E HUGO EMILIO NOMURA RA 22.123.051-9
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
